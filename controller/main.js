@@ -1,7 +1,9 @@
 var Models = require('../mongodb/mongoModel')
 
 exports.login = function(req, res) {
-    res.send('123login')
+    console.log(req.query);
+    console.log(req.body);
+    res.render('chat');
 }
 
 exports.registered = function(req, res) {

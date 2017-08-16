@@ -1,3 +1,6 @@
+var mainCont = require("./controller/main");
+
+
 module.exports = function(chat) {
     chat.use(function(req, res, next) {
         if (!res.locals.partials) {
@@ -20,10 +23,8 @@ module.exports = function(chat) {
         res.render('chat');
     });
 
-    chat.post('/sign-in', function(req, res) {
-        console.log(req.query);
-        console.log(req.body);
-    });
+    chat.post('/sign-in', mainCont.login);
+    chat.post('/sign-up', mainCont.registered);
 
     //404
     chat.use(function(req, res) {
