@@ -20,6 +20,11 @@ module.exports = function(chat) {
         res.render('chat');
     });
 
+    chat.post('/sign-in', function(req, res) {
+        console.log(req.query);
+        console.log(req.body);
+    });
+
     //404
     chat.use(function(req, res) {
         res.type('text/plain');

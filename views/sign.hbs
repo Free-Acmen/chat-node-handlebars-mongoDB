@@ -8,7 +8,7 @@
 <section class="login-container">
     <h4 class="title">Sign in to Chat</h4>
     <div class="login-form">
-        <form action="/signIn">
+        <form class="login" action="/sign-in?form=signIn" method="post">
             <label for="user-name">Username or Email Address</label>
             <input id="user-name" type="text" name="sign-name">
             <label for="user-pwd">
@@ -16,7 +16,7 @@
                 <a href="/passward-reset">Forgot password?</a>
             </label>
             <input id="user-pwd" type="password" name="sign-pwd"> 
-            <button type="button">Sign in</button>
+            <button id="sign-in" type="button">Sign in</button>
         </form>
     </div>
     <div>
@@ -29,6 +29,8 @@
 
 {{#section 'js'}}
     <script>
-        console.log(111);
+        $("#sign-in").click(function(){
+            $(".login").submit();
+        });
     </script>
 {{/section}}
