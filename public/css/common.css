@@ -1,0 +1,33 @@
+.header {
+    height: 2rem;
+    font-size: .8rem;
+}
+
+.head-container,
+.footer-container {
+    width: 1200px;
+    margin: 0 auto;
+    padding: 10px 0;
+}
+
+.header-sign {
+    text-align: center;
+    padding: 1rem;
+}
+
+.header-sign img {
+    width: 6rem;
+}
+
+.footer-container {
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.footer-container a {
+    color: #0366d6;
+}
+
+.blue {
+    color: #0366d6;
+}

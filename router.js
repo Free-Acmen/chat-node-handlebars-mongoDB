@@ -1,10 +1,3 @@
-// var Login = require(CON + "login");
-
-// exports.router = function(req, res) {
-//     var pathname = decodeURI(lib.url.parse(req.url).pathname);
-//     lib.httpParam.init(req, res);
-// }
-
 module.exports = function(chat) {
     chat.use(function(req, res, next) {
         if (!res.locals.partials) {
@@ -20,6 +13,10 @@ module.exports = function(chat) {
     });
 
     chat.get('/', function(req, res) {
+        res.render('sign');
+    });
+
+    chat.get('/chat', function(req, res) {
         res.render('chat');
     });
 
