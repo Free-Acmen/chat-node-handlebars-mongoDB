@@ -1,6 +1,18 @@
-var Models = require('../mongodb/mongoModel')
+var Models = require('../mongodb/mongoModel');
+
+
+exports.init = function(req, res, next) {
+    //判断是否记录登录,没有登陆状态设置未登录
+    if (!req.session.signState) {
+        req.session.signState = false;
+    }
+    //判断是否打开测试开关
+    res.locals.showTests = chat.get('env') !== 'production' && req.query.test === '1';
+    next();
+}
 
 exports.login = function(req, res) {
+    req.session.signState = true;
     console.log(req.query);
     console.log(req.body);
     res.render('chat');

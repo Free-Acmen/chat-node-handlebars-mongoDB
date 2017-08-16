@@ -1,6 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var router = require("./router");
+var credentials = require('./conf/credentials');
 var chat = express();
 
 //视图模版引擎
@@ -31,6 +32,10 @@ chat.use(bodyParser.urlencoded({ extended: false }));
 
 //静态中间件
 chat.use(express.static(__dirname + '/public'));
+
+//会话存储
+chat.use(require('cookie-parser')(credentials.cookieSecret));
+chat.use(require('express-session')());
 
 //路由
 router(chat);

@@ -1,19 +1,7 @@
 var mainCont = require("./controller/main");
 
-
 module.exports = function(chat) {
-    chat.use(function(req, res, next) {
-        if (!res.locals.partials) {
-            res.locals.partials = {};
-        }
-        res.locals.partials.date = new Date();
-        next();
-    });
-
-    chat.use(function(req, res, next) {
-        res.locals.showTests = chat.get('env') !== 'production' && req.query.test === '1';
-        next();
-    });
+    chat.use(mainCont.init);
 
     chat.get('/', function(req, res) {
         res.render('sign');
