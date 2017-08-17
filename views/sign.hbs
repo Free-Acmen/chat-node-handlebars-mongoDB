@@ -10,7 +10,7 @@
     <div class="login-form">
         <form class="login" action="/sign-in" method="post">
             <label for="user-name">Username or Email Address</label>
-            <input id="user-name" type="text" name="signName">
+            <input id="user-name" type="text" name="signAccount">
             <label for="user-pwd">
                 Password
                 <a href="/passward-reset">Forgot password?</a>
@@ -37,9 +37,8 @@
                 url: url,
                 data: data,
                 success: function(data){
-                    console.log(data);
                     if(data.state == "success"){
-                        location.href = location.href + data.url;
+                        location.href =location.protocol + "//" + location.host + "/" +data.url;
                     }
                 }
             });

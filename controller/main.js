@@ -19,9 +19,7 @@ exports.chatCont = function(req, res) {
 }
 
 exports.login = function(req, res) {
-    console.log(req.body);
-    // res.render('chat');
-    Models.User.find({ account: req.body.signName }, function(err, user) {
+    Models.User.find({ account: req.body.signAccount }, function(err, user) {
         if (err) {
             console.log("find err");
             return;
@@ -30,13 +28,15 @@ exports.login = function(req, res) {
         if (!user.length) {
             console.log("find null");
             return res.json({ state: "noone" });
+        } else if (user.length > 1) {
+            console.log("mongodb 数据异常");
+            return;
         }
 
-        console.log(user);
         var pwd = user[0].pwd;
-
         if (pwd == req.body.signPwd) {
             req.session.signState = true;
+            console.log(req);
             var context = {
                 state: "success",
                 url: "chat"
@@ -49,20 +49,41 @@ exports.login = function(req, res) {
 }
 
 exports.registered = function(req, res) {
-    let userPerson = new Models.User({
-        authId: '0',
-        name: 'admin',
-        pwd: 'admin',
-        email: 'lmllsq@126.com',
-        phone: '18695875698',
-        created: new Date().getTime()
-    });
+    Models.User.find(function(err, users) {
+        if (err) return;
+        let authId = users.length;
+        let isExist = false;
 
-    userPerson.save(function(err, data) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.render('sign');
+        users.map(function(user) {
+            if (user.account == req.body.signAccount) {
+                isExist = true;
+                return res.json({ state: "isExist" });
+            }
+        });
+
+        if (!isExist) {
+            let userPerson = new Models.User({
+                authId: authId,
+                name: req.body.signName,
+                pwd: req.body.signPwd,
+                account: req.body.signAccount,
+                created: new Date().getTime(),
+                isAdmin: false
+            });
+
+            userPerson.save(function(err, data) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    var context = {
+                        state: "success",
+                        url: ""
+                    }
+                    res.json(context);
+                }
+            });
         }
     });
+
+
 }

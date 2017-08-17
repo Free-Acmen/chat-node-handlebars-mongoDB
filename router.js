@@ -6,6 +6,9 @@ module.exports = function(chat) {
     chat.get('/', function(req, res) {
         res.render('sign');
     });
+    chat.get('/signup', function(req, res) {
+        res.render('register');
+    });
 
     chat.get('/chat', mainCont.chatCont);
     chat.post('/sign-in', mainCont.login);

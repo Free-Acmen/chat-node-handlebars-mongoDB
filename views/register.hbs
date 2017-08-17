@@ -6,17 +6,17 @@
 {{> headerSign}}
 
 <section class="login-container">
-    <h4 class="title">Sign in to Chat</h4>
+    <h4 class="title">Sign up to Chat</h4>
     <div class="login-form">
-        <form class="login" action="/sign-in?form=signIn" method="post">
-            <label for="user-name">Username or Email Address</label>
-            <input id="user-name" type="text" name="sign-name">
-            <label for="user-pwd">
-                Password
-                <a href="/passward-reset">Forgot password?</a>
-            </label>
-            <input id="user-pwd" type="password" name="sign-pwd"> 
-            <button id="sign-in" type="button">Sign in</button>
+        <form class="login" action="/sign-up" method="post">
+            <label for="user-name">Account</label>
+            <input id="user-name" type="text" name="signAccount">
+            <label for="user-pwd">Password</label>
+            <input id="user-pwd" type="password" name="signPwd"> 
+            <label for="user-pwd">Name</label>
+            <input id="user-pwd" type="text" name="signName"> 
+
+            <button id="sign-in" type="button">Sign up</button>
         </form>
     </div>
     <div>
@@ -30,7 +30,18 @@
 {{#section 'js'}}
     <script>
         $("#sign-in").click(function(){
-            $(".login").submit();
+            var url = $(".login").attr("action");
+            var data = $(".login").serialize();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: data,
+                success: function(data){
+                    if(data.state == "success"){
+                        location.href =location.protocol + "//" + location.host + "/" +data.url;
+                    }
+                }
+            });
         });
     </script>
 {{/section}}
