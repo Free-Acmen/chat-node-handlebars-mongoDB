@@ -1,11 +1,14 @@
 module.exports = function(mongoose) {
     const userSchema = mongoose.Schema({
-        authId: String,
+        authId: Number,
         name: String,
         pwd: String,
-        email: String,
-        phone: String,
-        created: Date
-    })
+        account: String,
+        created: Date,
+        isAdmin: Boolean
+    });
+    // userSchema.methods.getIsAamin = function() {
+    //     return this.isAdmin;
+    // }
     return mongoose.model('User', userSchema)
 }

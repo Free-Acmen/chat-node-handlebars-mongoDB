@@ -8,14 +8,14 @@
 <section class="login-container">
     <h4 class="title">Sign in to Chat</h4>
     <div class="login-form">
-        <form class="login" action="/sign-in" method="post">
+        <form class="login" action="/sign-in?form=signIn" method="post">
             <label for="user-name">Username or Email Address</label>
-            <input id="user-name" type="text" name="signName">
+            <input id="user-name" type="text" name="sign-name">
             <label for="user-pwd">
                 Password
                 <a href="/passward-reset">Forgot password?</a>
             </label>
-            <input id="user-pwd" type="password" name="signPwd"> 
+            <input id="user-pwd" type="password" name="sign-pwd"> 
             <button id="sign-in" type="button">Sign in</button>
         </form>
     </div>
@@ -30,19 +30,7 @@
 {{#section 'js'}}
     <script>
         $("#sign-in").click(function(){
-            var url = $(".login").attr("action");
-            var data = $(".login").serialize();
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: data,
-                success: function(data){
-                    console.log(data);
-                    if(data.state == "success"){
-                        location.href = location.href + data.url;
-                    }
-                }
-            });
+            $(".login").submit();
         });
     </script>
 {{/section}}

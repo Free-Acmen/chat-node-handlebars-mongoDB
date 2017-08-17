@@ -7,10 +7,7 @@ module.exports = function(chat) {
         res.render('sign');
     });
 
-    chat.get('/chat', function(req, res) {
-        res.render('chat');
-    });
-
+    chat.get('/chat', mainCont.chatCont);
     chat.post('/sign-in', mainCont.login);
     chat.post('/sign-up', mainCont.registered);
 
