@@ -6,14 +6,52 @@
 {{! 头部引入}}
 {{> header}}
 <section class="chat-container">
-    
+    <div class="user-list">
+        <h4>在线用户</h4>
+    </div>
+    <div class="message-box">
+        <div class="message-title"></div>
+        <div class="show-message"></div>
+        <textarea class="emit-message"></textarea>
+        <button class="send-message">Send Message</button>
+    </div>
 </section>
 
 {{! 头部引入}}
 {{> footer}}
 
 {{#section 'js'}}
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-        console.log(Utils);
+        {{!-- var ioSocket = io.connect("http://localhost:3000/");  --}}
+        var ioSocket = io(); 
+        ioSocket.on('connect', function(){
+            $('.message-title').text('Connect Success ! welcome {{userName}}');
+
+            ioSocket.emit('join', "{{userName}}"); 
+
+            ioSocket.on('message', function(msg) {
+                $('.show-message').append($('<p class="other"></p>').text(msg));
+
+                {{!-- $('.show-message').scrollTop($('.show-message')[0].scrollHeight); --}}
+            });
+        });
+        
+        $(".send-message").click(function(){
+            ioSocket.send($(".emit-message").val());
+            $('.show-message').append($('<p class="me"></p>').text($(".emit-message").val()));
+            $(".emit-message").val("");
+        });
+
+        $('.send-message').keydown(function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                ioSocket.send($(".emit-message").val());
+                $('.show-message').append($('<p class="me"></p>').text($(".emit-message").val()));
+                $(".emit-message").val("");
+            }
+        });
+
+     console.log(Utils);
     </script>
 {{/section}}

@@ -4,6 +4,14 @@ module.exports = function(chat) {
     chat.use(mainCont.init);
 
     chat.get('/', function(req, res) {
+        if (req.session.signState) {
+            res.redirect(303, '/chat');
+        } else {
+            res.redirect(303, '/signin');
+        };
+    });
+
+    chat.get('/signin', function(req, res) {
         res.render('sign');
     });
     chat.get('/signup', function(req, res) {

@@ -12,9 +12,10 @@ exports.init = function(req, res, next) {
 
 exports.chatCont = function(req, res) {
     if (req.session.signState) {
+        res.locals.userName = req.session.username;
         res.render('chat');
     } else {
-        res.redirect(303, '/');
+        res.redirect(303, '/signin');
     }
 }
 
@@ -24,7 +25,6 @@ exports.login = function(req, res) {
             console.log("find err");
             return;
         }
-        console.log(user.length);
         if (!user.length) {
             console.log("find null");
             return res.json({ state: "noone" });
@@ -36,7 +36,7 @@ exports.login = function(req, res) {
         var pwd = user[0].pwd;
         if (pwd == req.body.signPwd) {
             req.session.signState = true;
-            console.log(req);
+            req.session.username = req.body.signAccount;
             var context = {
                 state: "success",
                 url: "chat"

@@ -2,6 +2,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var router = require("./router");
 var credentials = require('./conf/credentials');
+var socketIo = require("socket.io");
 var chat = express();
 
 //视图模版引擎
@@ -40,6 +41,21 @@ chat.use(require('express-session')());
 //路由
 router(chat);
 
-chat.listen(chat.get('port'), function() {
+const server = chat.listen(chat.get('port'), function() {
     console.log('Express started in ' + chat.get('env') + ' mode on http://localhost:' + chat.get('port') + ' ;press Ctrl-c to terminate');
+});
+var userList = [];
+socketIo.listen(server).on('connection', function(socket) {
+    // console.log(socket);
+    socket.on('message', function(msg) {
+        console.log('Message Received: ', msg);
+        socket.broadcast.emit('message', msg);
+        // socket.emit('message', msg);
+    });
+
+    socket.on('join', function(name) {
+        console.log(name);
+        userList.push(name);
+    })
+
 });
