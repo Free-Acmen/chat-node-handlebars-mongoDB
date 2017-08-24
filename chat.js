@@ -44,12 +44,12 @@ router(chat);
 const server = chat.listen(chat.get('port'), function() {
     console.log('Express started in ' + chat.get('env') + ' mode on http://localhost:' + chat.get('port') + ' ;press Ctrl-c to terminate');
 });
+
 var userList = [];
 socketIo.listen(server).on('connection', function(socket) {
-    // console.log(socket);
-    socket.on('message', function(msg) {
-        console.log('Message Received: ', msg);
-        socket.broadcast.emit('message', msg);
+    socket.on('message', function(data) {
+        console.log(data);
+        socket.broadcast.emit('message', data);
         // socket.emit('message', msg);
     });
 

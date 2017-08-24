@@ -30,25 +30,29 @@
 
             ioSocket.emit('join', "{{userName}}"); 
 
-            ioSocket.on('message', function(msg) {
-                $('.show-message').append($('<p class="other"></p>').text(msg));
+            ioSocket.on('message', function(data) {
+                console.log(data);
+                $('.show-message').append($('<p class="other"></p>').text(data.msg));
 
                 {{!-- $('.show-message').scrollTop($('.show-message')[0].scrollHeight); --}}
             });
         });
         
         $(".send-message").click(function(){
-            ioSocket.send($(".emit-message").val());
+            var data = {
+                name: "{{userName}}",
+                msg: $(".emit-message").val()
+            }
+            console.log(data);
+            ioSocket.send(data);
             $('.show-message').append($('<p class="me"></p>').text($(".emit-message").val()));
             $(".emit-message").val("");
         });
 
-        $('.send-message').keydown(function (e) {
+        $('.emit-message').keyup(function (e) {
             if (e.which === 13) {
                 e.preventDefault();
-                ioSocket.send($(".emit-message").val());
-                $('.show-message').append($('<p class="me"></p>').text($(".emit-message").val()));
-                $(".emit-message").val("");
+                $(".send-message").trigger("click");
             }
         });
 
