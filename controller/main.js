@@ -21,13 +21,19 @@ exports.chatCont = function(req, res) {
 
 exports.login = function(req, res) {
     Models.User.find({ account: req.body.signAccount }, function(err, user) {
+        const faileMsg = {
+            state: "faile",
+            msg: ""
+        }
         if (err) {
             console.log("find err");
-            return;
+            faileMsg.msg = "服务器错误,请刷新尝试!";
+            return res.json(faileMsg);
         }
         if (!user.length) {
             console.log("find null");
-            return res.json({ state: "noone" });
+            faileMsg.msg = "该用户不存在!";
+            return res.json(faileMsg);
         } else if (user.length > 1) {
             console.log("mongodb 数据异常");
             return;
@@ -43,7 +49,8 @@ exports.login = function(req, res) {
             }
             return res.json(context);
         } else {
-            return res.json({ state: "pwd worang" });
+            faileMsg.msg = "密码错误!";
+            return res.json(faileMsg);
         }
     });
 }
@@ -57,7 +64,7 @@ exports.registered = function(req, res) {
         users.map(function(user) {
             if (user.account == req.body.signAccount) {
                 isExist = true;
-                return res.json({ state: "isExist" });
+                return res.json({ state: "isExist", msg: "该用户已经存在" });
             }
         });
 
@@ -77,7 +84,7 @@ exports.registered = function(req, res) {
                 } else {
                     var context = {
                         state: "success",
-                        url: ""
+                        url: "signin"
                     }
                     res.json(context);
                 }

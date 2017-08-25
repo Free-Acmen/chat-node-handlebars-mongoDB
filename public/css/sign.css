@@ -10,6 +10,24 @@
     text-decoration: none;
 }
 
+.login-container .res-msg {
+    text-align: center;
+    border: 1px solid #d8dee2;
+    border-radius: .6rem;
+    padding: .4rem 1rem;
+    color: #E61326;
+    margin-bottom: .7rem;
+    opacity: 0;
+    position: absolute;
+}
+
+.login-container .res-msg.faile {
+    transition: all 400ms linear;
+    opacity: 1;
+    display: block;
+    position: relative;
+}
+
 .login-container .title {
     font-size: 1.2rem;
     text-align: center;
@@ -60,4 +78,16 @@
     background-color: #28a745;
     background-image: -webkit-linear-gradient(270deg, #34d058 0%, #28a745 90%);
     background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%);
+}
+
+.link-signup {
+    text-align: center;
+    border: 1px solid #d8dee2;
+    border-radius: .6rem;
+    padding: .4rem 1rem;
+    margin-top: 15px;
+}
+
+.link-signup a {
+    float: inherit;
 }

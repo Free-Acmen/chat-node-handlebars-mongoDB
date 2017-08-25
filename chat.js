@@ -4,6 +4,7 @@ var router = require("./router");
 var credentials = require('./conf/credentials');
 var socketIo = require("socket.io");
 var chat = express();
+var userList = [];
 
 //视图模版引擎
 var handlebars = require('express3-handlebars').create({
@@ -45,17 +46,17 @@ const server = chat.listen(chat.get('port'), function() {
     console.log('Express started in ' + chat.get('env') + ' mode on http://localhost:' + chat.get('port') + ' ;press Ctrl-c to terminate');
 });
 
-var userList = [];
 socketIo.listen(server).on('connection', function(socket) {
     socket.on('message', function(data) {
         console.log(data);
         socket.broadcast.emit('message', data);
-        // socket.emit('message', msg);
     });
-
     socket.on('join', function(name) {
         console.log(name);
-        userList.push(name);
-    })
-
+        if (userList.indexOf(name) == -1) {
+            userList.push(name);
+        }
+        socket.broadcast.emit('join', userList);
+        socket.emit('join', userList);
+    });
 });

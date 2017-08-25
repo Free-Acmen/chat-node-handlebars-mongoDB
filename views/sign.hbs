@@ -7,6 +7,7 @@
 
 <section class="login-container">
     <h4 class="title">Sign in to Chat</h4>
+    <div class="res-msg">1111</div>
     <div class="login-form">
         <form class="login" action="/sign-in" method="post">
             <label for="user-name">Username or Email Address</label>
@@ -19,9 +20,7 @@
             <button id="sign-in" type="button">Sign in</button>
         </form>
     </div>
-    <div>
-        
-    </div>
+    <div class="link-signup">New to Chat? <a href="/signup">Create an account.</a></div>
 </section>
 
 {{! 页脚引入}}
@@ -38,7 +37,10 @@
                 data: data,
                 success: function(data){
                     if(data.state == "success"){
+                        $(".res-msg").removeClass("faile").html("");
                         location.href =location.protocol + "//" + location.host + "/" +data.url;
+                    }else{
+                        $(".res-msg").addClass("faile").html(data.msg);
                     }
                 }
             });

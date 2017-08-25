@@ -8,6 +8,9 @@
 <section class="chat-container">
     <div class="user-list">
         <h4>在线用户</h4>
+        <ul>
+            <li></li>
+        </ul>
     </div>
     <div class="message-box">
         <div class="message-title"></div>
@@ -23,19 +26,29 @@
 {{#section 'js'}}
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        {{!-- var ioSocket = io.connect("http://localhost:3000/");  --}}
-        var ioSocket = io(); 
+        var ioSocket = io.connect("http://localhost:3000/"); 
+        {{!-- var ioSocket = io();  --}}
         ioSocket.on('connect', function(){
             $('.message-title').text('Connect Success ! welcome {{userName}}');
 
             ioSocket.emit('join', "{{userName}}"); 
+            ioSocket.on('join', function(data){
+                console.log(data);
+                var li = "";
+                for(var i=0, len=data.length; i<len; i++){
+                    li += "<li>"+ data[i] +"</li>";
+                }
+                $(".user-list").find("ul").html(li);
+            });
 
             ioSocket.on('message', function(data) {
                 console.log(data);
-                $('.show-message').append($('<p class="other"></p>').text(data.msg));
+                $('.show-message').append($('<p class="other"></p>').text(data.name+":"+data.msg));
 
                 {{!-- $('.show-message').scrollTop($('.show-message')[0].scrollHeight); --}}
             });
+
+            
         });
         
         $(".send-message").click(function(){
@@ -43,9 +56,8 @@
                 name: "{{userName}}",
                 msg: $(".emit-message").val()
             }
-            console.log(data);
             ioSocket.send(data);
-            $('.show-message').append($('<p class="me"></p>').text($(".emit-message").val()));
+            $('.show-message').append($('<p class="me"></p>').text("{{userName}}:"+$(".emit-message").val()));
             $(".emit-message").val("");
         });
 
