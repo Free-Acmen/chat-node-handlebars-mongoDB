@@ -19,6 +19,7 @@ module.exports = function(chat) {
     });
 
     chat.get('/chat', mainCont.chatCont);
+    chat.get('/signout', mainCont.signout);
     chat.post('/sign-in', mainCont.login);
     chat.post('/sign-up', mainCont.registered);
 

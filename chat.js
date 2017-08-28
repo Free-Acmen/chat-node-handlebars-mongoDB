@@ -36,14 +36,14 @@ chat.use(bodyParser.urlencoded({ extended: false }));
 chat.use(express.static(__dirname + '/public'));
 
 //会话存储,存储在mongoDB中
-// var MongoSessionStore = require("session-mongoose")(require('connect'));
-// var sessionStore = new MongoSessionStore({ url: "mongodb://127.0.0.1:27017/chat" });
+var MongoSessionStore = require("session-mongoose")(require('connect'));
+var sessionStore = new MongoSessionStore({ url: "mongodb://127.0.0.1:27017/chat" });
 chat.use(require('cookie-parser')(credentials.cookieSecret));
 chat.use(require('express-session')({
     secret: credentials.cookieSecret,
-    cookie: { maxAge: 60 * 1000 },
+    cookie: { maxAge: 5 * 60 * 1000 },
     rolling: true,
-    // store: sessionStore
+    store: sessionStore
 }));
 
 
@@ -56,14 +56,21 @@ const server = chat.listen(chat.get('port'), function() {
 
 socketIo.listen(server).on('connection', function(socket) {
     socket.on('message', function(data) {
-        console.log(data);
         socket.broadcast.emit('message', data);
     });
     socket.on('join', function(name) {
-        console.log(name);
         if (userList.indexOf(name) == -1) {
             userList.push(name);
         }
+        socket.broadcast.emit('join', userList);
+        socket.emit('join', userList);
+    });
+    socket.on('leave', function(name) {
+        var index = userList.indexOf(name);
+        userList.splice(index, 1);
+        socket.emit('disconnect');
+    });
+    socket.on('disconnect', function() {
         socket.broadcast.emit('join', userList);
         socket.emit('join', userList);
     });

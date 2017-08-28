@@ -4,6 +4,8 @@ exports.init = function(req, res, next) {
     //判断是否记录登录,没有登陆状态设置未登录
     if (!req.session.signState) {
         req.session.signState = false;
+    } else {
+        res.locals.signState = true;
     }
     //判断是否打开测试开关
     // res.locals.showTests = chat.get('env') !== 'production' && req.query.test === '1';
@@ -42,6 +44,7 @@ exports.login = function(req, res) {
         var pwd = user[0].pwd;
         if (pwd == req.body.signPwd) {
             req.session.signState = true;
+
             req.session.username = req.body.signAccount;
             var context = {
                 state: "success",
@@ -93,4 +96,10 @@ exports.registered = function(req, res) {
     });
 
 
+}
+
+exports.signout = function(req, res) {
+    req.session.signState = false;
+    res.locals.signState = false;
+    res.redirect(303, '/signin');
 }

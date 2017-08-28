@@ -10,6 +10,18 @@
     padding: 10px 0;
 }
 
+.signed .sing-out {
+    line-height: 1.5rem;
+    color: #0366d6;
+    cursor: pointer;
+    margin-left: .3rem;
+}
+
+.signed img {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
 .header-sign {
     text-align: center;
     padding: 3rem 1rem 1rem;

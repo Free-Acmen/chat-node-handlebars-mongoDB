@@ -2,11 +2,18 @@
     <div class="head-container clear">
         <h2 class="left">Your Chat, I Chat, Our Chat</h2>
         <ul>
-            <li class="right">
-                <a href="/signin">Sign in</a>
-                <span class="blue">or</span>
-                <a href="/signup">Sign up</a>
-            </li>
+            {{#if signState}}
+                <li class="right signed">
+                    <img src="{{static '/image/sign.png'}}" alt="logo">
+                    <a class="sing-out" href="/signout">Sign Out</a>
+                </li>
+            {{else}}
+                <li class="right">
+                    <a href="/signin">Sign in</a>
+                    <span class="blue">or</span>
+                    <a href="/signup">Sign up</a>
+                </li>
+            {{/if}}
         </ul>
     </div>
 </header>

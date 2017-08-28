@@ -33,7 +33,6 @@
 
             ioSocket.emit('join', "{{userName}}"); 
             ioSocket.on('join', function(data){
-                console.log(data);
                 var li = "";
                 for(var i=0, len=data.length; i<len; i++){
                     li += "<li>"+ data[i] +"</li>";
@@ -42,22 +41,30 @@
             });
 
             ioSocket.on('message', function(data) {
-                console.log(data);
-                $('.show-message').append($('<p class="other"></p>').text(data.name+":"+data.msg));
-
-                {{!-- $('.show-message').scrollTop($('.show-message')[0].scrollHeight); --}}
+                var html = `<h4>${data.name}</h4>
+                        <p>${data.msg}</p>`;
+    
+                $('.show-message').append($('<div class="other"></div>').html(html));
+                $('.show-message').scrollTop($('.show-message').height());
             });
 
-            
+            ioSocket.on('disconnect', function() {
+                console.log("与服务其断开");
+            });
+
         });
         
         $(".send-message").click(function(){
             var data = {
-                name: "{{userName}}",
-                msg: $(".emit-message").val()
-            }
+                    name: "{{userName}}",
+                    msg: $(".emit-message").val()
+                }
             ioSocket.send(data);
-            $('.show-message').append($('<p class="me"></p>').text("{{userName}}:"+$(".emit-message").val()));
+            var html = `<h4>{{userName}}</h4>
+                        <p>${$(".emit-message").val()}</p>`;
+            $('.show-message').append($('<div class="me"></div>').html(html));
+            console.log($('.show-message>div'));
+            $('.show-message').scrollTop($('.show-message').height());
             $(".emit-message").val("");
         });
 
@@ -68,6 +75,8 @@
             }
         });
 
-     console.log(Utils);
+        $('.sing-out').click(function(){
+            ioSocket.emit('leave', "{{userName}}");
+        });
     </script>
 {{/section}}
