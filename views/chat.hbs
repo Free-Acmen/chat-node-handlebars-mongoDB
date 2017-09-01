@@ -26,8 +26,8 @@
 {{#section 'js'}}
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var ioSocket = io.connect("http://localhost:3000/"); 
-        {{!-- var ioSocket = io();  --}}
+        {{!-- var ioSocket = io.connect("http://localhost:3000/");  --}}
+        var ioSocket = io(); 
         ioSocket.on('connect', function(){
             $('.message-title').text('Connect Success ! welcome {{userName}}');
 

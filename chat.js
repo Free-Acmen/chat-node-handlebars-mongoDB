@@ -35,9 +35,14 @@ chat.use(bodyParser.urlencoded({ extended: false }));
 //静态中间件
 chat.use(express.static(__dirname + '/public'));
 
+//获取当前环境
+var dev = process.env.NODE_ENV || "development";
+const config = require('./conf/conf')(dev.replace(/^\s|\s$/g, ""));
+var connectUrl = 'mongodb://' + config.domain + ':27017/chat';
+
 //会话存储,存储在mongoDB中
 var MongoSessionStore = require("session-mongoose")(require('connect'));
-var sessionStore = new MongoSessionStore({ url: "mongodb://127.0.0.1:27017/chat" });
+var sessionStore = new MongoSessionStore({ url: connectUrl });
 chat.use(require('cookie-parser')(credentials.cookieSecret));
 chat.use(require('express-session')({
     secret: credentials.cookieSecret,
@@ -45,7 +50,6 @@ chat.use(require('express-session')({
     rolling: true,
     store: sessionStore
 }));
-
 
 //路由
 router(chat);

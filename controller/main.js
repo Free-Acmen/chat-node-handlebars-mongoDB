@@ -7,6 +7,7 @@ exports.init = function(req, res, next) {
     } else {
         res.locals.signState = true;
     }
+    console.log(req);
     //判断是否打开测试开关
     // res.locals.showTests = chat.get('env') !== 'production' && req.query.test === '1';
     next();
